@@ -54,90 +54,124 @@ class CarManager:
 
 
 
+##welcome message
+def menu_face():
+    print('------ WELCOME ------')
+    print("1. Add a car")
+    print("2. View all cars")
+    print("3. View total number of cars")
+    print("4. See a car's details")
+    print("5. Service a car")
+    print("6. Update mileage")
+    print("7. Quit")
 
 
+##functions for choices---------
 
-    # '''terminal menu'''
-def terminal_menu():
-    message = ''
-    while message != 0:
-        print('------ WELCOME ------')
-        print("1. Add a car")
-        print("2. View all cars")
-        print("3. View total number of cars")
-        print("4. See a car's details")
-        print("5. Service a car")
-        print("6. Update mileage")
-        print("7. Quit")
+##choice 1  
+def add_car():
+    new_make = input('tell me the make of the car: ')
+    new_model = input('tell me the model of the car: ')
+    new_year = int(input('tell me the year of the car: '))
+    new_mileage = int(input('tell me the mileage of the car: '))
+    new_services = [input('tell me the services the car has had: ')]
+    new_id = CarManager.total_cars + 1
+    car_name = f'car{new_id}'
+    car_name = CarManager(new_make, new_model, new_year, new_mileage, new_services)
+    print(f'you have added a new car, this is your ID: {car_name.get_id}')
 
+##choice 2
+def view_all_cars():
+    for car in CarManager.all_cars:
+                print(str(car))
+
+##choice 4 
+def car_details():
+    which_car = int(input("which car's details? please provide the ID "))
+    for car in CarManager.all_cars:
+        if car._id == which_car:
+            car.details()
+
+##choice 5  
+def service_a_car():
+    which_car = int(input("which car needs servicing? please provide the ID "))
+    for car in CarManager.all_cars:
+        if car._id == which_car:
+            new_services = []
+            add_these_services = input('what services do you need? ')
+            new_services.append(add_these_services)
+            car._services.append(new_services)
+
+##choice 6  
+def replace_mileage():
+    which_car = int(input("which car needs their mileage updated? please provide the ID "))
+    for car in CarManager.all_cars:
+        if car._id == which_car:
+            new_mileage = int(input("what's the new mileage?  "))
+            car.update_mileage(new_mileage)
+
+##returning to menu face function-----------
+            
+def return_to_menu_face():
+    #return to main menu
+    user_input = (int(input('Press 0 if you want to return to main menu, press any other number to exit menu')))
+    return user_input
+    # if user_input == 0:
+    #     return
+    # elif user_input == 7:
+    #     print('goodbye!')
+    #     return False
+
+    # '''main function'''
+def main():
+    user_input = 0
+    while user_input == 0:
         
+        menu_face()
         choice = int(input("Enter your choice number "))
 
         # "1. Add a car"
         if choice == 1:
-            new_make = input('tell me the make of the car: ')
-            new_model = input('tell me the model of the car: ')
-            new_year = int(input('tell me the year of the car: '))
-            new_mileage = int(input('tell me the mileage of the car: '))
-            new_services = [input('tell me the services the car has had: ')]
-            new_id = CarManager.total_cars + 1
-            car_name = f'car{new_id}'
-            car_name = CarManager(new_make, new_model, new_year, new_mileage, new_services)
-
-            print(f'you have added a new car, this is your ID: {car_name.get_id}')
-
+            add_car()
             #return to main menu
-            print(int(input('Press 0 if you want to return to main menu ')))
+            user_input = return_to_menu_face()
             
         # "2. View all cars
         elif choice == 2:
-            for car in CarManager.all_cars:
-                print(str(car))
+            view_all_cars()
             #return to main menu
-            print(int(input('Press 0 if you want to return to main menu ')))
+            user_input = return_to_menu_face()
 
 
         # 3. View total number of cars
         elif choice == 3:
             print(f'Total Number of Cars: {CarManager.total_cars}')
              #return to main menu
-            print(int(input('Press 0 if you want to return to main menu ')))
+            user_input = return_to_menu_face()
+
         
         #4. See a car's details"
         elif choice == 4:
-            which_car = int(input("which car's details? please provide the ID "))
-            for car in CarManager.all_cars:
-                if car._id == which_car:
-                    car.details()
+            car_details()
              #return to main menu
-            print(int(input('Press 0 if you want to return to main menu ')))
+            user_input = return_to_menu_face()
                 
         # "5. Service a car"
         elif choice == 5:
-            which_car = int(input("which car needs servicing? please provide the ID "))
-            for car in CarManager.all_cars:
-                if car._id == which_car:
-                    new_services = []
-                    add_these_services = input('what services do you need? ')
-                    new_services.append(add_these_services)
-                    car._services.append(new_services)
+            service_a_car()
              #return to main menu
-            print(int(input('Press 0 if you want to return to main menu ')))
+            user_input = return_to_menu_face()
                 
 
         # "6. Update mileage"
         elif choice == 6:
-            which_car = int(input("which car needs their mileage updated? please provide the ID "))
-            for car in CarManager.all_cars:
-                if car._id == which_car:
-                    new_mileage = int(input("what's the new mileage?  "))
-                    car.update_mileage(new_mileage)
+            replace_mileage()
              #return to main menu
-            print(int(input('Press 0 if you want to return to main menu ')))
+            user_input = return_to_menu_face()
                  
         # quit
         elif choice == 7:
-            return False
+            break
         
         else:
             raise ValueError('enter a number 1-7')
@@ -154,7 +188,7 @@ car1 = CarManager("jeep", 'wrangler', 2010, 99999, ['upgraded seats', 'added rim
 car2 = CarManager('ford','fusion', 2016, 11111, ['car freshner'])
 # print(car2)
 
-terminal_menu()
+main()
 
 
 
